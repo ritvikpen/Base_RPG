@@ -1,0 +1,67 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/Walls.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Spawn/Intro.gd" type="Script" id=2]
+[ext_resource path="res://scenes/text_interface_engine.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 77.7192, 10 )
+
+[node name="Spawn" type="Node2D"]
+
+[node name="Walls" parent="." index="0" instance=ExtResource( 1 )]
+
+[node name="Dialogue" type="Control" parent="." index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 64.0
+margin_top = 469.0
+margin_right = 1216.0
+margin_bottom = 616.0
+rect_pivot_offset = Vector2( 0, 0 )
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+script = ExtResource( 2 )
+_sections_unfolded = [ "Material" ]
+
+[node name="text_interface_engine" parent="Dialogue" index="0" instance=ExtResource( 3 )]
+
+[node name="Player" parent="Dialogue" index="1" groups=[
+"Persist",
+] instance=ExtResource( 4 )]
+
+position = Vector2( 731.357, -115.963 )
+
+[node name="Area2D" type="Area2D" parent="." index="2"]
+
+position = Vector2( 633.174, 19.2926 )
+scale = Vector2( 0.6, 0.6 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D" index="0"]
+
+shape = SubResource( 1 )
+
+[connection signal="done" from="Dialogue" to="Dialogue/Player" method="_on_Dialogue_done"]
+
+[connection signal="save" from="Dialogue" to="Dialogue/Player" method="_on_Dialogue_save"]
+
+[connection signal="start" from="Dialogue" to="Dialogue/Player" method="_on_Dialogue_start"]
+
+[connection signal="body_entered" from="Area2D" to="Dialogue" method="_on_Area2D_body_entered"]
+
+
